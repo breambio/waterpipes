@@ -1,0 +1,308 @@
+
+
+
+
+from configPY import *
+
+rule all:
+    input:
+        expand("{desiredOutput}",
+        desiredOutput=desiredOutputList)
+
+
+def getLink(wildcards):
+    r = wildcards.run
+    link = sampleDF.loc[sampleDF["Raw"] == wildcards.raw, "Link"].to_list()[0]
+    return f"{link}_{r}.fq.gz"
+
+
+def getLib(raw):
+    return sampleDF.loc[sampleDF["Raw"].str.find(raw) != -1, "Library"].unique()[0]
+
+
+rule Links:
+    input:
+        getLink
+    output:
+        "links/{raw}.{run}.fastq.gz"
+    shell:
+        """
+        ln -s {input} {output}
+        """
+
+rule Fastqc:
+    input:
+        "links/{raw}.{run}.fastq.gz"
+    output:
+        "results/qc/{raw}.{run}_fastqc.zip"
+    shell:
+        """
+        fastqc {input} -o results/qc
+        """
+
+
+
+
+def getMultiqc(wildcards):
+    out = []
+    for raw in sampleDF["Raw"]:
+        fq = f"results/qc/{raw}"
+        lib = getLib(raw)
+        if lib == "Single":
+            fq += f".1_fastqc.zip"
+            out.append(fq)
+        elif lib == "Paired":
+            fq1 = fq + f".1_fastqc.zip"
+            out.append(fq1)
+            fq2 = fq + f".2_fastqc.zip"
+            out.append(fq2)
+    return expand(out)
+
+
+rule Multiqc:
+    input:
+        getMultiqc
+    output:
+        "results/qc/multiqc_report.html"
+    shell:
+        """
+        cd results/qc/ && multiqc .
+        """
+
+
+
+
+
+rule cutadapt:
+    input:
+        r1="links/{raw}.1.fastq.gz",
+        r2="links/{raw}.2.fastq.gz"
+    output:
+        r1="links/{raw}.1.trimmed.fastq.gz",
+        r2="links/{raw}.2.trimmed.fastq.gz"
+    threads:
+        32
+    shell:
+        """
+        cutadapt -A CTGTCTCTTATA -a CTGTCTCTTATA -o {output.r1} -p {output.r2} -j {threads} {input.r1} {input.r2}
+        """
+
+# TODO: Read sampling sampling ? Note the {N} -> number of reads to be sampled.
+#rule SampleFQ:
+#    input:
+#        r1="links/{raw}.1.trimmed.fastq.gz",
+#        r2="links/{raw}.2.trimmed.fastq.gz"
+#    output:
+#        r1="samples/{raw}.1.{N}.fastq.gz",
+#        r2="samples/{raw}.2.{N}.fastq.gz"
+#    run:
+#        if wildcards.N == "raw":
+#            shell("""
+#
+#            ln -s ../{input.r1} {output.r1}
+#            ln -s ../{input.r2} {output.r2}
+#
+#            """)
+#        else:
+#            shell("""
+#            reformat.sh \
+#            in1={input.r1} in2={input.r2} \
+#            out={output.r1} out2={output.r2} \
+#            samplereadstarget={wildcards.N}
+#            """)
+#
+##cutadapt -g AGATGTGTATAAGAGACAG -a CTGTCTCTTATA -o o1.fq -p o2.fq links/DU145.siNC_eGFP.1.fastq.gz links/DU145.siNC_eGFP.2.fastq.gz
+
+def getFq(wildcards):
+    raw = wildcards.raw#.rsplit(".", 1)[0]
+    lib = getLib(raw)
+    if lib == "Single":
+        return "links/{raw}_1.fastq.gz"
+    elif lib == "Paired":
+        return "links/{raw}_1.fastq.gz", "links/{raw}_2.fastq.gz"
+
+
+
+# TODO: genomeAnnotations issue
+genomeAnnotations = "/groups/lackgrp/genomeAnnotations"
+rule bwa_mem:
+    input:
+        getFq
+    output:
+        "results/mapping/{raw}.{ref}.raw.bam"
+    threads:
+        32
+    shell:
+        """
+        bwa mem -t {threads} \
+            {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.bwa.idx \
+            {input} | \
+            samtools view -bS - > {output}
+        """
+
+
+rule BamProcess:
+    input:
+        "results/mapping/{raw}.{ref}.raw.bam"
+    output:
+        "results/mapping/{raw}.{ref}.coorsorted.bam"
+    threads:
+        32
+    params:
+        "-q 30"#"{config[PARAMS][BamProcess]}" # Note that you can add parameters as "-q 30 -F 1804"
+    shell:
+        """
+        cat <(samtools view -H {input}) <(samtools view {params} {input}) | \
+        samtools fixmate -m -@ {threads} - - | \
+        samtools sort -@ {threads} -m 10G - | \
+        samtools markdup -@ {threads} - {output}
+        """
+
+
+# TODO: config param
+def getFilterParams(wildcards):
+    lib = getLib(wildcards.raw)
+    if lib == "Single":
+        return "-F 3852"
+    elif lib == "Paired":
+        return "-F 3852 -f2"
+
+
+
+rule Filter:
+    input:
+        "results/mapping/{raw}.{ref}.coorsorted.bam",
+    output:
+        "results/mapping/{raw}.{ref}.filtered.bam"
+    threads:
+        32
+    params:
+        getFilterParams
+    shell:
+        """
+        samtools view {input} | egrep -v "chrM" |\
+         samtools view -b -@ {threads} -T {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.fa \
+        {params} > {output}
+        """
+
+
+
+
+
+rule Index:
+    input:
+        "results/mapping/{raw}.{ref}.filtered.bam"
+    output:
+        "results/mapping/{raw}.{ref}.filtered.bam.bai"
+    threads:
+        32
+    shell:
+        """
+        samtools index -@ {threads} {input}
+        """
+
+
+
+def getParamsMACS(wildcards):
+    lib = getLib(wildcards.raw)
+    if lib == "Single":
+        return "-f BAM"
+    elif lib == "Paired":
+        return "-f BAMPE"
+
+
+def getMACSinput(wildcards):
+    inp = ["results/mapping/{raw}.{ref}.filtered.bam"]
+    if wildcards.type in ("regular_tc"):
+        raw = wildcards.raw.rsplit(".", 1)[0]
+        raw_inp = sampleDF.loc[(sampleDF["Raw"].str.find(raw) != -1), "Control"].unique()[0]
+        inp.append(f"results/mapping/{raw_inp}.filtered.bam")
+    return inp
+
+rule Macs:
+        input:
+            getMACSinput
+        output:
+            "results/peaks/{raw}.{ref}.{type}_peaks.narrowPeak",
+            "results/peaks/{raw}.{ref}.{type}_treat_pileup.bdg"
+        threads:
+            16
+        params:
+            getParamsMACS
+        run:
+            if wildcards.type == "nomodel":
+                shell("""
+                macs3 callpeak -t {input[0]} \
+                -n results/peaks/{wildcards.raw}.{wildcards.ref}.{wildcards.N}.nomodel \
+                {params} -g hs -q 0.01 --nomodel --shift -75 --extsize 150 \
+                --keep-dup all -B --SPMR
+                """)
+            elif wildcards.type == "callsummit":
+                shell("""
+                macs3 callpeak -t {input[0]} \
+                -n results/peaks/{wildcards.raw}.{wildcards.ref}.{wildcards.N}.callsummit \
+                {params} -g hs -q 0.01 --call-summits -B
+                """)
+            elif wildcards.type == "regular_tc":
+                shell("""
+                macs3 callpeak \
+                  -t {input[0]} \
+                  -c {input[1]} \
+                  -g hs -n results/peaks/{wildcards.raw}.{wildcards.ref}.{wildcards.N}.regular_tc -B -q 0.01 {params}
+                """)
+            elif wildcards.type == "genrich":
+                shell("""
+                samtools view -h {input[0]} \
+                | Genrich -t - -o {output} -j
+                """)
+
+
+rule GenomeCov:
+    input:
+        bam="results/mapping/{raw}.{ref}.filtered.bam",
+    output:
+        bg=temp("results/bigwig/{raw}.{ref}.genomecov.{type}.bg"),
+        bw="results/bigwig/{raw}.{ref}.genomecov.{type}.bigWig"
+    threads:
+        16
+    run:
+        if wildcards.type == "RPM":
+            shell("""
+            N=`samtools view -@{threads} {input.bam} | wc -l`
+
+            bedtools genomecov \
+            -scale `bc -l <<< 1000000/$N` \
+            -bg -ibam {input.bam} | sort -k1,1 -k2,2n --parallel={threads} > {output.bg}
+
+            bedGraphToBigWig {output.bg} {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.chrom.sizes {output.bw}
+            """)
+        elif wildcards.type == "rawcount":
+            shell("""
+            bedtools genomecov \
+            -bg -ibam {input.bam} | sort -k1,1 -k2,2n --parallel={threads} > {output.bg}
+
+            bedGraphToBigWig {output.bg} {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.chrom.sizes {output.bw}
+            """)
+
+
+# TODO: genomeAnnotations issue
+# TODO: pipe sort (clip -> sort)
+rule MACSbw:
+    input:
+        "results/peaks/{raw}.{ref}.{type}_treat_pileup.bdg"
+    output:
+        clip=temp("results/bw/{raw}.{ref}.{type}.clip.bg"),
+        sort=temp("results/bw/{raw}.{ref}.{type}.sort.bg"),
+        bw="results/bw/{raw}.{ref}.{type}.bw"
+    shell:
+        """
+        chrSizes={genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.chrom.sizes
+
+        bedtools slop -i {input} -g $chrSizes -b 0 \
+        | bedClip stdin $chrSizes {output.clip}
+
+        sort -k1,1 -k2,2n {output.clip} > {output.sort}
+
+        bedGraphToBigWig {output.sort} $chrSizes {output.bw}
+        """
+
