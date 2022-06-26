@@ -1,6 +1,3 @@
-
-
-
 def getFq(wildcards):
     trim = ""
     if config["CUT_ADAPTERS"]:
@@ -8,9 +5,9 @@ def getFq(wildcards):
 
     lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
     if lib == "Single":
-        return f"links/{{raw}}_1.{trim}.fastq.gz"
+        return f"links/{{raw}}_1{trim}.fastq.gz"
     elif lib == "Paired":
-        return f"links/{{raw}}_1.{trim}.fastq.gz", f"links/{{raw}}_2.{trim}.fastq.gz"
+        return f"links/{{raw}}_1{trim}.fastq.gz", f"links/{{raw}}_2{trim}.fastq.gz"
 
 
 
@@ -20,7 +17,7 @@ rule bwa_mem:
     output:
         "results_{ref}/mapping/{raw}.raw.bam"
     params:
-        idx = config[wildcards.ref]["BWA_IDX"]
+        idx = config["REF"]["BWA_IDX"]
     threads:
         32
     shell:
@@ -30,6 +27,10 @@ rule bwa_mem:
             {input} | \
             samtools view -bS - > {output}
         """
+
+
+
+
 
 
 rule BamProcess:
@@ -50,6 +51,16 @@ rule BamProcess:
         """
 
 
+
+
+def getFilterParams(wildcards):
+    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
+    if lib == "Single":
+        return "-F 3852"
+    elif lib == "Paired":
+        return "-F 3852 -f 2"
+
+
 rule Filter:
     input:
         "results_{ref}/mapping/{raw}.coorsorted.bam",
@@ -58,9 +69,8 @@ rule Filter:
     threads:
         32
     params:
-        config[wildcards.ref]["FA"],
-        config["BAMFILTER_PARAMS"]
-
+        config["REF"]["FA"],
+        getFilterParams
     shell:
         """
         samtools view {input} | egrep -v "chrM" | \

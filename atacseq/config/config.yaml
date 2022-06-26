@@ -1,20 +1,18 @@
 
-
-INPUT:
-    DF: config/samples.tsv
-    NAMES: Raw
+INPUT_DF: config/samples.tsv
 
 OUTPUT:
-
-    REF:
-        - hg19
     MACS3_TYPE:
         - callsummit
     RUN:
         PEAKS: True
         QC: False
 
-
+REF:
+    NAME: hg19
+    FA: ...
+    BWA_IDX: ...
+    CHROM_SIZES: ...
 
 CUT_ADAPTERS: True
 
@@ -22,23 +20,4 @@ ADAPTER_FWD: CTGTCTCTTATA
 ADAPTER_REV: CTGTCTCTTATA
 
 BAMPROCESS_PARAMS: -q 30
-
-BAMFILTER_PARAMS: -F 3852 -f2
-
-MACS3_PARAMS: -f BAMPE
-
-
-HG19:
-    BWA_IDX: ...
-    STAR_IDX: ...
-    FA: ...
-    NCBI_REFSEQ: ...
-    CHROM_SIZES: ...
-
-HG38:
-    BWA_IDX: ...
-    STAR_IDX: ...
-    FA: ...
-    NCBI_REFSEQ: ...
-    CHROM_SIZES: ...
 

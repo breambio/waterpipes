@@ -1,5 +1,5 @@
 
-# TODO:
+
 rule cutadapt:
     input:
         r1="rawData/{raw}_1.fastq.gz",
@@ -32,7 +32,7 @@ rule cutadapt:
 # TODO: fastq vs fq accession
 def getLink(wildcards):
     r = wildcards.run
-    link = sampleDF.loc[sampleDF["Raw"] == wildcards.raw, "Link"].to_list()[0]
+    link = sampleDF.loc[sampleDF["Raw"] == wildcards.raw, "Path"].to_list()[0]
     return f"{link}_{r}.fastq.gz"
 
 rule Links:

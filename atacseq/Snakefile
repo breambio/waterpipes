@@ -1,34 +1,25 @@
 
 
-
-
-configfile: "config/config.yaml"
-# Cluster config
-
 import pandas as pd
 
-PATH_ = "/groups/lackgrp/ll_members/berkay/1-notebook/s-HOXB13/public/atacseq"
+sampleDF = pd.read_table(config["INPUT_DF"])
 
+sampleDF["Raw"] = sampleDF["Source"] +"."+ sampleDF["Rep"]
+sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand=True)[1]
 
-sampleDF = pd.read_table(config["INPUT"]["DF"])
-
-input_column=config["INPUT"]["NAMES"]
+ref = config["REF"]["NAME"]
 
 outputs = []
 
 if config["OUTPUT"]["RUN"]["QC"]:
-    outputs += "qc/multiqc_report.html"
+    outputs += ["qc/multiqc_report.html"]
 
 if config["OUTPUT"]["RUN"]["PEAKS"]:
-
     outputs += [
         f"results_{ref}/bw/{raw}.{type_}.bw"
-        for raw in sampleDF[input_column]
-        for ref in config["OUTPUT"]["REF"]
+        for raw in sampleDF["Raw"]
         for type_ in config["OUTPUT"]["MACS3_TYPE"]
     ]
-
-
 
 rule all:
     input:
@@ -39,4 +30,5 @@ include: "rules/qc.smk"
 include: "rules/sra.smk"
 include: "rules/premap.smk"
 include: "rules/map.smk"
+include: "rules/peaks.smk"
 

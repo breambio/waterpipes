@@ -1,87 +1,87 @@
-Cell	Target	Rep	Raw	RawSample	Link	Library
-H660	atac	rep1	H660.atac.rep1	SRR17655755	rawData/SRR17655755	Paired
-H660	atac	rep2	H660.atac.rep2	SRR17655756	rawData/SRR17655756	Paired
-PDX34a	atac	rep1	PDX34a.atac.rep1	SRR17655757	rawData/SRR17655757	Paired
-PDX34a	atac	rep2	PDX34a.atac.rep2	SRR17655758	rawData/SRR17655758	Paired
-PDX34a	atac	rep3	PDX34a.atac.rep3	SRR17655759	rawData/SRR17655759	Paired
-PDX34a	atac	rep4	PDX34a.atac.rep4	SRR17655760	rawData/SRR17655760	Paired
-PDX16b	atac	rep1	PDX16b.atac.rep1	SRR17655761	rawData/SRR17655761	Paired
-PDX16b	atac	rep2	PDX16b.atac.rep2	SRR17655762	rawData/SRR17655762	Paired
-PDX16b	atac	rep3	PDX16b.atac.rep3	SRR17655763	rawData/SRR17655763	Paired
-PDX16b	atac	rep4	PDX16b.atac.rep4	SRR17655764	rawData/SRR17655764	Paired
-PDX16a	atac	rep1	PDX16a.atac.rep1	SRR17655765	rawData/SRR17655765	Paired
-PDX16a	atac	rep2	PDX16a.atac.rep2	SRR17655766	rawData/SRR17655766	Paired
-PDX16a	atac	rep3	PDX16a.atac.rep3	SRR17655767	rawData/SRR17655767	Paired
-PDX16a	atac	rep4	PDX16a.atac.rep4	SRR17655768	rawData/SRR17655768	Paired
-PDX10a	atac	rep1	PDX10a.atac.rep1	SRR17655769	rawData/SRR17655769	Paired
-PDX10a	atac	rep2	PDX10a.atac.rep2	SRR17655770	rawData/SRR17655770	Paired
-PDX10a	atac	rep3	PDX10a.atac.rep3	SRR17655771	rawData/SRR17655771	Paired
-PDX10a	atac	rep4	PDX10a.atac.rep4	SRR17655772	rawData/SRR17655772	Paired
-PDX09a	atac	rep1	PDX09a.atac.rep1	SRR17655773	rawData/SRR17655773	Paired
-PDX09a	atac	rep2	PDX09a.atac.rep2	SRR17655774	rawData/SRR17655774	Paired
-PDX09a	atac	rep3	PDX09a.atac.rep3	SRR17655775	rawData/SRR17655775	Paired
-PDX09a	atac	rep4	PDX09a.atac.rep4	SRR17655776	rawData/SRR17655776	Paired
-PDX01a	atac	rep1	PDX01a.atac.rep1	SRR17655777	rawData/SRR17655777	Paired
-PDX01a	atac	rep2	PDX01a.atac.rep2	SRR17655778	rawData/SRR17655778	Paired
-PDX01a	atac	rep3	PDX01a.atac.rep3	SRR17655779	rawData/SRR17655779	Paired
-PDX01a	atac	rep4	PDX01a.atac.rep4	SRR17655780	rawData/SRR17655780	Paired
-DU145	atac	rep1	DU145.atac.rep1	SRR17655781	rawData/SRR17655781	Paired
-DU145	atac	rep2	DU145.atac.rep2	SRR17655782	rawData/SRR17655782	Paired
-PC3	atac	rep1	PC3.atac.rep1	SRR17655783	rawData/SRR17655783	Paired
-PC3	atac	rep2	PC3.atac.rep2	SRR17655784	rawData/SRR17655784	Paired
-C4-2	atac	rep1	C4-2.atac.rep1	SRR17655785	rawData/SRR17655785	Paired
-C4-2	atac	rep2	C4-2.atac.rep2	SRR17655786	rawData/SRR17655786	Paired
-22Rv1	atac	rep1	22Rv1.atac.rep1	SRR17655787	rawData/SRR17655787	Paired
-22Rv1	atac	rep2	22Rv1.atac.rep2	SRR17655788	rawData/SRR17655788	Paired
-VCaP	atac	rep1	VCaP.atac.rep1	SRR17655789	rawData/SRR17655789	Paired
-VCaP	atac	rep2	VCaP.atac.rep2	SRR17655790	rawData/SRR17655790	Paired
-LNCaP	atac	rep1	LNCaP.atac.rep1	SRR17655791	rawData/SRR17655791	Paired
-LNCaP	atac	rep2	LNCaP.atac.rep2	SRR17655792	rawData/SRR17655792	Paired
-WCM1262	atac	rep1	WCM1262.atac.rep1	SRR17655793	rawData/SRR17655793	Paired
-WCM1262	atac	rep2	WCM1262.atac.rep2	SRR17655794	rawData/SRR17655794	Paired
-WCM1078	atac	rep1	WCM1078.atac.rep1	SRR17655795	rawData/SRR17655795	Paired
-WCM1078	atac	rep2	WCM1078.atac.rep2	SRR17655796	rawData/SRR17655796	Paired
-WCM155	atac	rep1	WCM155.atac.rep1	SRR17655797	rawData/SRR17655797	Paired
-WCM155	atac	rep2	WCM155.atac.rep2	SRR17655798	rawData/SRR17655798	Paired
-WCM154	atac	rep1	WCM154.atac.rep1	SRR17655799	rawData/SRR17655799	Paired
-WCM154	atac	rep2	WCM154.atac.rep2	SRR17655800	rawData/SRR17655800	Paired
-MSK-PCa24	atac	rep1	MSK-PCa24.atac.rep1	SRR17655801	rawData/SRR17655801	Paired
-MSK-PCa24	atac	rep2	MSK-PCa24.atac.rep2	SRR17655802	rawData/SRR17655802	Paired
-MSK-PCa24	atac	rep3	MSK-PCa24.atac.rep3	SRR17655803	rawData/SRR17655803	Paired
-MSK-PCa24	atac	rep4	MSK-PCa24.atac.rep4	SRR17655804	rawData/SRR17655804	Paired
-MSK-PCa22	atac	rep1	MSK-PCa22.atac.rep1	SRR17655805	rawData/SRR17655805	Paired
-MSK-PCa22	atac	rep2	MSK-PCa22.atac.rep2	SRR17655806	rawData/SRR17655806	Paired
-MSK-PCa22	atac	rep3	MSK-PCa22.atac.rep3	SRR17655807	rawData/SRR17655807	Paired
-MSK-PCa22	atac	rep4	MSK-PCa22.atac.rep4	SRR17655808	rawData/SRR17655808	Paired
-MSK-PCa20	atac	rep1	MSK-PCa20.atac.rep1	SRR17655809	rawData/SRR17655809	Paired
-MSK-PCa20	atac	rep2	MSK-PCa20.atac.rep2	SRR17655810	rawData/SRR17655810	Paired
-MSK-PCa19	atac	rep1	MSK-PCa19.atac.rep1	SRR17655811	rawData/SRR17655811	Paired
-MSK-PCa19	atac	rep2	MSK-PCa19.atac.rep2	SRR17655812	rawData/SRR17655812	Paired
-MSK-PCa18	atac	rep1	MSK-PCa18.atac.rep1	SRR17655813	rawData/SRR17655813	Paired
-MSK-PCa18	atac	rep2	MSK-PCa18.atac.rep2	SRR17655814	rawData/SRR17655814	Paired
-MSK-PCa17	atac	rep1	MSK-PCa17.atac.rep1	SRR17655815	rawData/SRR17655815	Paired
-MSK-PCa17	atac	rep2	MSK-PCa17.atac.rep2	SRR17655816	rawData/SRR17655816	Paired
-MSK-PCa16	atac	rep1	MSK-PCa16.atac.rep1	SRR17655817	rawData/SRR17655817	Paired
-MSK-PCa16	atac	rep2	MSK-PCa16.atac.rep2	SRR17655818	rawData/SRR17655818	Paired
-MSK-PCa15	atac	rep1	MSK-PCa15.atac.rep1	SRR17655819	rawData/SRR17655819	Paired
-MSK-PCa15	atac	rep2	MSK-PCa15.atac.rep2	SRR17655820	rawData/SRR17655820	Paired
-MSK-PCa14	atac	rep1	MSK-PCa14.atac.rep1	SRR17655821	rawData/SRR17655821	Paired
-MSK-PCa14	atac	rep2	MSK-PCa14.atac.rep2	SRR17655822	rawData/SRR17655822	Paired
-MSK-PCa13	atac	rep1	MSK-PCa13.atac.rep1	SRR17655823	rawData/SRR17655823	Paired
-MSK-PCa13	atac	rep2	MSK-PCa13.atac.rep2	SRR17655824	rawData/SRR17655824	Paired
-MSK-PCa12	atac	rep1	MSK-PCa12.atac.rep1	SRR17655825	rawData/SRR17655825	Paired
-MSK-PCa12	atac	rep2	MSK-PCa12.atac.rep2	SRR17655826	rawData/SRR17655826	Paired
-MSK-PCa11	atac	rep1	MSK-PCa11.atac.rep1	SRR17655827	rawData/SRR17655827	Paired
-MSK-PCa11	atac	rep2	MSK-PCa11.atac.rep2	SRR17655828	rawData/SRR17655828	Paired
-MSK-PCa10	atac	rep1	MSK-PCa10.atac.rep1	SRR17655829	rawData/SRR17655829	Paired
-MSK-PCa10	atac	rep2	MSK-PCa10.atac.rep2	SRR17655830	rawData/SRR17655830	Paired
-MSK-PCa9	atac	rep1	MSK-PCa9.atac.rep1	SRR17655831	rawData/SRR17655831	Paired
-MSK-PCa9	atac	rep2	MSK-PCa9.atac.rep2	SRR17655832	rawData/SRR17655832	Paired
-MSK-PCa8	atac	rep1	MSK-PCa8.atac.rep1	SRR17655833	rawData/SRR17655833	Paired
-MSK-PCa8	atac	rep2	MSK-PCa8.atac.rep2	SRR17655834	rawData/SRR17655834	Paired
-MSK-PCa3	atac	rep1	MSK-PCa3.atac.rep1	SRR17655835	rawData/SRR17655835	Paired
-MSK-PCa3	atac	rep2	MSK-PCa3.atac.rep2	SRR17655836	rawData/SRR17655836	Paired
-MSK-PCa2	atac	rep1	MSK-PCa2.atac.rep1	SRR17655837	rawData/SRR17655837	Paired
-MSK-PCa2	atac	rep2	MSK-PCa2.atac.rep2	SRR17655838	rawData/SRR17655838	Paired
-MSK-PCa1	atac	rep1	MSK-PCa1.atac.rep1	SRR17655839	rawData/SRR17655839	Paired
-MSK-PCa1	atac	rep2	MSK-PCa1.atac.rep2	SRR17655840	rawData/SRR17655840	Paired
+Source	Rep	Path	Library	Reference
+H660	rep1	rawData/SRR17655755	Paired	hg38
+H660	rep2	rawData/SRR17655756	Paired	hg38
+PDX34a	rep1	rawData/SRR17655757	Paired	hg38
+PDX34a	rep2	rawData/SRR17655758	Paired	hg38
+PDX34a	rep3	rawData/SRR17655759	Paired	hg38
+PDX34a	rep4	rawData/SRR17655760	Paired	hg38
+PDX16b	rep1	rawData/SRR17655761	Paired	hg38
+PDX16b	rep2	rawData/SRR17655762	Paired	hg38
+PDX16b	rep3	rawData/SRR17655763	Paired	hg38
+PDX16b	rep4	rawData/SRR17655764	Paired	hg38
+PDX16a	rep1	rawData/SRR17655765	Paired	hg38
+PDX16a	rep2	rawData/SRR17655766	Paired	hg38
+PDX16a	rep3	rawData/SRR17655767	Paired	hg38
+PDX16a	rep4	rawData/SRR17655768	Paired	hg38
+PDX10a	rep1	rawData/SRR17655769	Paired	hg38
+PDX10a	rep2	rawData/SRR17655770	Paired	hg38
+PDX10a	rep3	rawData/SRR17655771	Paired	hg38
+PDX10a	rep4	rawData/SRR17655772	Paired	hg38
+PDX09a	rep1	rawData/SRR17655773	Paired	hg38
+PDX09a	rep2	rawData/SRR17655774	Paired	hg38
+PDX09a	rep3	rawData/SRR17655775	Paired	hg38
+PDX09a	rep4	rawData/SRR17655776	Paired	hg38
+PDX01a	rep1	rawData/SRR17655777	Paired	hg38
+PDX01a	rep2	rawData/SRR17655778	Paired	hg38
+PDX01a	rep3	rawData/SRR17655779	Paired	hg38
+PDX01a	rep4	rawData/SRR17655780	Paired	hg38
+DU145	rep1	rawData/SRR17655781	Paired	hg38
+DU145	rep2	rawData/SRR17655782	Paired	hg38
+PC3	rep1	rawData/SRR17655783	Paired	hg38
+PC3	rep2	rawData/SRR17655784	Paired	hg38
+C4-2	rep1	rawData/SRR17655785	Paired	hg38
+C4-2	rep2	rawData/SRR17655786	Paired	hg38
+22Rv1	rep1	rawData/SRR17655787	Paired	hg38
+22Rv1	rep2	rawData/SRR17655788	Paired	hg38
+VCaP	rep1	rawData/SRR17655789	Paired	hg38
+VCaP	rep2	rawData/SRR17655790	Paired	hg38
+LNCaP	rep1	rawData/SRR17655791	Paired	hg38
+LNCaP	rep2	rawData/SRR17655792	Paired	hg38
+WCM1262	rep1	rawData/SRR17655793	Paired	hg38
+WCM1262	rep2	rawData/SRR17655794	Paired	hg38
+WCM1078	rep1	rawData/SRR17655795	Paired	hg38
+WCM1078	rep2	rawData/SRR17655796	Paired	hg38
+WCM155	rep1	rawData/SRR17655797	Paired	hg38
+WCM155	rep2	rawData/SRR17655798	Paired	hg38
+WCM154	rep1	rawData/SRR17655799	Paired	hg38
+WCM154	rep2	rawData/SRR17655800	Paired	hg38
+MSK-PCa24	rep1	rawData/SRR17655801	Paired	hg38
+MSK-PCa24	rep2	rawData/SRR17655802	Paired	hg38
+MSK-PCa24	rep3	rawData/SRR17655803	Paired	hg38
+MSK-PCa24	rep4	rawData/SRR17655804	Paired	hg38
+MSK-PCa22	rep1	rawData/SRR17655805	Paired	hg38
+MSK-PCa22	rep2	rawData/SRR17655806	Paired	hg38
+MSK-PCa22	rep3	rawData/SRR17655807	Paired	hg38
+MSK-PCa22	rep4	rawData/SRR17655808	Paired	hg38
+MSK-PCa20	rep1	rawData/SRR17655809	Paired	hg38
+MSK-PCa20	rep2	rawData/SRR17655810	Paired	hg38
+MSK-PCa19	rep1	rawData/SRR17655811	Paired	hg38
+MSK-PCa19	rep2	rawData/SRR17655812	Paired	hg38
+MSK-PCa18	rep1	rawData/SRR17655813	Paired	hg38
+MSK-PCa18	rep2	rawData/SRR17655814	Paired	hg38
+MSK-PCa17	rep1	rawData/SRR17655815	Paired	hg38
+MSK-PCa17	rep2	rawData/SRR17655816	Paired	hg38
+MSK-PCa16	rep1	rawData/SRR17655817	Paired	hg38
+MSK-PCa16	rep2	rawData/SRR17655818	Paired	hg38
+MSK-PCa15	rep1	rawData/SRR17655819	Paired	hg38
+MSK-PCa15	rep2	rawData/SRR17655820	Paired	hg38
+MSK-PCa14	rep1	rawData/SRR17655821	Paired	hg38
+MSK-PCa14	rep2	rawData/SRR17655822	Paired	hg38
+MSK-PCa13	rep1	rawData/SRR17655823	Paired	hg38
+MSK-PCa13	rep2	rawData/SRR17655824	Paired	hg38
+MSK-PCa12	rep1	rawData/SRR17655825	Paired	hg38
+MSK-PCa12	rep2	rawData/SRR17655826	Paired	hg38
+MSK-PCa11	rep1	rawData/SRR17655827	Paired	hg38
+MSK-PCa11	rep2	rawData/SRR17655828	Paired	hg38
+MSK-PCa10	rep1	rawData/SRR17655829	Paired	hg38
+MSK-PCa10	rep2	rawData/SRR17655830	Paired	hg38
+MSK-PCa9	rep1	rawData/SRR17655831	Paired	hg38
+MSK-PCa9	rep2	rawData/SRR17655832	Paired	hg38
+MSK-PCa8	rep1	rawData/SRR17655833	Paired	hg38
+MSK-PCa8	rep2	rawData/SRR17655834	Paired	hg38
+MSK-PCa3	rep1	rawData/SRR17655835	Paired	hg38
+MSK-PCa3	rep2	rawData/SRR17655836	Paired	hg38
+MSK-PCa2	rep1	rawData/SRR17655837	Paired	hg38
+MSK-PCa2	rep2	rawData/SRR17655838	Paired	hg38
+MSK-PCa1	rep1	rawData/SRR17655839	Paired	hg38
+MSK-PCa1	rep2	rawData/SRR17655840	Paired	hg38
