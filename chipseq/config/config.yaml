@@ -1,0 +1,25 @@
+INPUT_DF: config/samples.tsv
+
+OUTPUT:
+    RUN:
+        QC: False
+        PEAKS: True
+        BWS: True
+        CHIPATLAS_BEDS: False
+        CHIPATLAS_BWS: False
+    BW_NORMALIZATIONS:
+        - rawcount
+    CHIPATLAS_THRESHOLD: 50
+
+REF:
+    NAME: hg19
+    FA: ...
+    BWA_IDX: ...
+    CHROM_SIZES: ...
+
+CUT_ADAPTERS: True
+ADAPTER_FWD: CTGTCTCTTATA
+ADAPTER_REV: CTGTCTCTTATA
+
+BAMPROCESS_PARAMS: -q 30
+

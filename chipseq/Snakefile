@@ -1,246 +1,58 @@
+import pandas as pd
 
+sampleDF = pd.read_table(config["INPUT_DF"])
 
+sampleDF["Raw"] = sampleDF["Source"] + "." + sampleDF["Rep"]
+sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand=True)[1]
 
+ref = config["REF"]["NAME"]
+bwNorm = config["OUTPUT"]["BW_NORMALIZATIONS"]
 
-from configPY import *
+outputs = []
 
-ruleorder: BamMerge > Filter
+if config["OUTPUT"]["RUN"]["QC"]:
+    outputs += ["qc/multiqc_report.html"]
 
-include: "optionals.smk"
+if config["OUTPUT"]["RUN"]["PEAKS"]:
+    outputs += [
+        f"results_{ref}/peaks/{raw}_peaks.narrowPeak"
+        for raw in sampleDF["Raw"]
+        if raw.find("input") == -1
+    ]
+
+if config["OUTPUT"]["RUN"]["BWS"]:
+    outputs += [
+        f"results_{ref}/bigwig/{raw}.genomecov.{norm}.bw"
+        for raw in sampleDF["Raw"]
+        for norm in bwNorm
+    ]
+
+if config["OUTPUT"]["RUN"]["CHIPATLAS_BEDS"]:
+    threshold = config["OUTPUT"]["CHIPATLAS_THRESHOLD"]
+    outputs += [
+        f"results_{ref}/cabeds/{srx}.{threshold}.bed"
+        for raw in sampleDF["RawSample"]
+    ]
+
+if config["OUTPUT"]["RUN"]["CHIPATLAS_BWS"]:
+    outputs += [
+        f"results_{ref}/cabigwig/{srx}.bw"
+        for raw in sampleDF["RawSample"]
+    ]
 
 rule all:
     input:
-        expand("{desiredOutput}",
-        desiredOutput=desiredOutputList)
+        expand("{out_}", out_=outputs)
 
+include: "rules/qc.smk"
+include: "rules/sra.smk"
+include: "rules/premap.smk"
+include: "rules/map.smk"
+include: "rules/peaks.smk"
+include: "rules/bw.smk"
 
+include: "rules/chipatlas.smk"
 
-rule SRAprefetch:
-        output:
-                "rawData/{SRA}/{SRA}.sra"
-        shell:
-                """
-                prefetch -O rawData {wildcards.SRA}
-                """
-
-
-rule ParallelFastqDump:
-    input:
-        "rawData/{srr}/{srr}.sra"
-    output:
-        R1="rawData/{srr}_1.fastq.gz",
-        R2="rawData/{srr}_2.fastq.gz"
-    threads:
-        64
-    run:
-        lib = sampleDF.loc[sampleDF["RawSample"] == wildcards.srr, "Library"].unique()[0]
-        if lib == "Single":
-            shell("""
-            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
-            touch {output.R2}
-            """)
-        elif lib == "Paired":
-            shell("""
-            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
-            """)
-
-
-rule ChipAtlas:
-    output:
-        "results/cabigwig/{srx}.{ref}.bigWig"
-    threads:
-        16
-    shell:
-        """
-        url=http://dbarchive.biosciencedbc.jp/kyushu-u/hg19/eachData/bw/{wildcards.srx}.bw
-        if [[ $(wget $url -O-) ]] 2>/dev/null; then
-            /home/ualtintas/apps/aria2-1.35.0/src/aria2c -x 16 -s 16 \
-            $url \
-            -o {output}
-        else
-            touch {output}
-        fi
-        """
-
-
-rule ChipAtlasBed:
-    output:
-        "results/cabeds/{srx}.{ref}.{threshold}.bed"
-    threads:
-        16
-    shell:
-        """
-        url=http://dbarchive.biosciencedbc.jp/kyushu-u/hg19/eachData/bed05/{wildcards.srx}.{wildcards.threshold}.bed
-        if [[ $(wget $url -O-) ]] 2>/dev/null;
-            then
-                /home/ualtintas/apps/aria2-1.35.0/src/aria2c -x 16 -s 16 \
-                $url \
-                -o {output}
-            else
-                touch {output}
-        fi
-        """
-
-
-# TODO: Discuss the merging issue. I believe fastq files should be merged. How can a user define which samples should merge? Should we automatically do merging?
-
-#def getRepsToConcat(wildcards):
-#    srxs = sampleDF.loc[sampleDF[on] == wildcards.raw, "SRX"].to_list()
-#    srrs = []
-#    for srx in srxs:
-#        srrs += sampleDF.loc[sampleDF["SRX"] == srx, "SRR"].to_list()
-#
-#    r = wildcards.run
-#    return expand("rawData/{srr}_{{run}}.fastq.gz", srr=srrs)
-#
-#
-#rule ConcatFastq:
-#        input:
-#            getRepsToConcat
-#        output:
-#            temp("rawData/{raw}.{run}.fastq.gz")
-#        threads:
-#            4
-#        shell:
-#            """
-#            zcat {input} | gzip > {output}
-#            """
-
-
-################################################################################
-
-
-def getLib(raw):
-    return sampleDF.loc[sampleDF[on].str.find(raw) != -1, "Library"].unique()[0]
-
-
-def getLink(wildcards):
-    link = sampleDF.loc[sampleDF[on] == wildcards.raw, "Link"].to_list()[0]
-    return f"{link}_{wildcards.run}.fastq.gz"
-
-
-rule Links:
-    input:
-        getLink
-    output:
-        "links/{raw}_{run}.fastq.gz"
-    shell:
-        """
-        ln -s ../{input} {output}
-        """
-
-def getFq(wildcards):
-    raw = wildcards.raw
-    lib = getLib(wildcards.raw)
-
-    if lib == "Single":
-        return "links/{raw}_1.fastq.gz"
-    elif lib == "Paired":
-        return "links/{raw}_1.fastq.gz", "links/{raw}_2.fastq.gz"
-
-
-# TODO: genomeAnnotations (indexes etc.) config file to define location.
-genomeAnnotations = "/groups/lackgrp/genomeAnnotations"
-rule bwa_mem:
-    input:
-        getFq
-    output:
-        temp("results/mapping/{raw}.{ref}.raw.bam")
-    threads:
-        32
-    shell:
-        """
-        bwa mem -t {threads} \
-            {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.bwa.idx \
-            {input} | \
-            samtools view -bS - > {output}
-        """
-
-
-rule BamProcess:
-    input:
-        "results/mapping/{raw}.{ref}.raw.bam"
-    output:
-        temp("results/mapping/{raw}.{ref}.coorsorted.bam")
-    threads:
-        32
-    params:
-        "-q 30"#"{config[PARAMS][BamProcess]}" # Note that you can add parameters as "-q 30 -F 1804"
-    shell:
-        """
-        cat <(samtools view -H {input}) <(samtools view {params} {input}) | \
-        samtools fixmate -m -@ {threads} - - | \
-        samtools sort -@ {threads} -m 10G - | \
-        samtools markdup -@ {threads} - {output}
-        """
-
-
-
-def getFilterParams(wildcards):
-    lib = getLib(wildcards.raw)
-    if lib == "Single":
-        return "-F 3076"
-    elif lib == "Paired":
-        return "-F 3076 -f2"
-
-
-rule Filter:
-    input:
-        "results/mapping/{raw}.{ref}.coorsorted.bam",
-    output:
-        temp("results/mapping/{raw}.{ref}.filtered.bam")
-    threads:
-        32
-    params:
-        getFilterParams
-    shell:
-        """
-        samtools view -@ {threads} -O BAM {params} {input} -o {output}
-        """
-
-
-
-
-rule Index:
-    input:
-        "results/mapping/{raw}.{ref}.filtered.bam"
-    output:
-        "results/mapping/{raw}.{ref}.filtered.bam.bai"
-    threads:
-        32
-    shell:
-        """
-        samtools index -@ {threads} {input}
-        """
-
-
-
-
-
-rule GenomeCov:
-    input:
-        bam="results/mapping/{raw}.{ref}.filtered.bam",
-    output:
-        bg=temp("results/bigwig/{raw}.{ref}.genomecov.{type}.bg"),
-        bw="results/bigwig/{raw}.{ref}.genomecov.{type}.bigWig"
-    threads:
-        16
-    run:
-        if wildcards.type == "RPM":
-            shell("""
-            N=`samtools view -@{threads} {input.bam} | wc -l`
-
-            bedtools genomecov \
-            -scale `bc -l <<< 1000000/$N` \
-            -bg -ibam {input.bam} | sort -k1,1 -k2,2n --parallel={threads} > {output.bg}
-
-            bedGraphToBigWig {output.bg} {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.chrom.sizes {output.bw}
-            """)
-        elif wildcards.type == "rawcount":
-            shell("""
-            bedtools genomecov \
-            -bg -ibam {input.bam} | sort -k1,1 -k2,2n --parallel={threads} > {output.bg}
-
-            bedGraphToBigWig {output.bg} {genomeAnnotations}/{wildcards.ref}/{wildcards.ref}.chrom.sizes {output.bw}
-            """)
+# TODO: Rule name standard
+# TODO: Tidiness
 
