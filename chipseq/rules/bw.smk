@@ -26,4 +26,3 @@ rule GenomeCov:
 
             bedGraphToBigWig {output.bg} {params.chrSizes} {output.bw}
             """)
-

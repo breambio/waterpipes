@@ -27,4 +27,3 @@ rule Macs:
           -c {input[1]} \
           -g hs -n results_{wildcards.ref}/peaks/{wildcards.raw} -B -q 0.00001 {params}
         """
-

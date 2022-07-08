@@ -1,17 +1,17 @@
 rule SRAprefetch:
-        output:
-                "rawData/{SRA}/{SRA}.sra"
-        shell:
-                """
-                prefetch -O rawData {wildcards.SRA}
-                """
+    output:
+        temp("rawData/{srr}/{srr}.sra")
+    shell:
+        """
+        prefetch -O rawData {wildcards.srr}
+        """
 
 rule ParallelFastqDump:
     input:
         "rawData/{srr}/{srr}.sra"
     output:
-        R1="rawData/{srr}_1.fastq.gz",
-        R2="rawData/{srr}_2.fastq.gz"
+        r1 = "rawData/{srr}_1.fastq.gz",
+        r2 = "rawData/{srr}_2.fastq.gz"
     threads:
         64
     run:
@@ -19,10 +19,9 @@ rule ParallelFastqDump:
         if lib == "Single":
             shell("""
             parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
-            touch {output.R2}
+            touch {output.r2}
             """)
         elif lib == "Paired":
             shell("""
             parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
             """)
-

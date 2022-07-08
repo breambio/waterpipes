@@ -1,5 +1,3 @@
-
-
 def getMACSparam(wildcards):
     lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
     if lib == "Single":
@@ -7,14 +5,12 @@ def getMACSparam(wildcards):
     elif lib == "Paired":
         return "-f BAMPE"
 
-
 def getMACSinput(wildcards):
     inp = ["results_{ref}/mapping/{raw}.filtered.bam"]
     if wildcards.type in ("tVSc"):
         raw_inp = sampleDF.loc[(sampleDF["Raw"].str.find(wildcards.raw) != -1), "Control"].unique()[0]
         inp.append(f"results_{{ref}}/mapping/{raw_inp}.filtered.bam")
     return inp
-
 
 rule Macs:
         input:
@@ -53,18 +49,14 @@ rule Macs:
                 | Genrich -t - -o {output} -j
                 """)
 
-
-
-# TODO: genomeAnnotations issue
-# TODO: pipe sort (clip -> sort)
 rule MACSbw:
     input:
         "results_{ref}/peaks/{raw}.{type}_treat_pileup.bdg"
     output:
-        bg=temp("results_{ref}/bw/{raw}.{type}.bg"),
-        bw="results_{ref}/bw/{raw}.{type}.bw"
+        bg = temp("results_{ref}/bw/{raw}.{type}.bg"),
+        bw = "results_{ref}/bw/{raw}.{type}.bw"
     params:
-        chrSizes=config["REF"]["CHROM_SIZES"]
+        chrSizes = config["REF"]["CHROM_SIZES"]
     shell:
         """
         bedtools slop -i {input} -g {params.chrSizes} -b 0 \
@@ -73,4 +65,3 @@ rule MACSbw:
 
         bedGraphToBigWig {output.bg} {params.chrSizes} {output.bw}
         """
-

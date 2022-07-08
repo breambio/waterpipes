@@ -1,4 +1,8 @@
-
+# TODO: fastq vs fq accession
+def getLink(wildcards):
+    r = wildcards.run
+    link = sampleDF.loc[sampleDF["Raw"] == wildcards.raw, "Path"].to_list()[0]
+    return f"{link}_{r}.fastq.gz"
 
 rule cutadapt:
     input:
@@ -24,17 +28,6 @@ rule cutadapt:
             cutadapt -a {params.fwd} -A {params.rev} -o {output.r1} -p {output.r2} -j {threads} {input}
             """)
 
-
-
-
-
-
-# TODO: fastq vs fq accession
-def getLink(wildcards):
-    r = wildcards.run
-    link = sampleDF.loc[sampleDF["Raw"] == wildcards.raw, "Path"].to_list()[0]
-    return f"{link}_{r}.fastq.gz"
-
 rule Links:
     input:
         getLink
@@ -44,4 +37,3 @@ rule Links:
         """
         ln -s ../{input} {output}
         """
-

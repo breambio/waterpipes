@@ -1,11 +1,9 @@
-
-
 import pandas as pd
 
 sampleDF = pd.read_table(config["INPUT_DF"])
 
-sampleDF["Raw"] = sampleDF["Source"] +"."+ sampleDF["Rep"]
-sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand=True)[1]
+sampleDF["Raw"] = sampleDF["Source"] + "." + sampleDF["Rep"]
+sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand = True)[1]
 
 ref = config["REF"]["NAME"]
 
@@ -23,12 +21,10 @@ if config["OUTPUT"]["RUN"]["PEAKS"]:
 
 rule all:
     input:
-        expand("{out_}", out_=outputs)
-
+        expand("{out_}", out_ = outputs)
 
 include: "rules/qc.smk"
 include: "rules/sra.smk"
 include: "rules/premap.smk"
 include: "rules/map.smk"
 include: "rules/peaks.smk"
-

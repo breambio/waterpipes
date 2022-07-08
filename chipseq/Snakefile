@@ -3,7 +3,7 @@ import pandas as pd
 sampleDF = pd.read_table(config["INPUT_DF"])
 
 sampleDF["Raw"] = sampleDF["Source"] + "." + sampleDF["Rep"]
-sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand=True)[1]
+sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand = True)[1]
 
 ref = config["REF"]["NAME"]
 bwNorm = config["OUTPUT"]["BW_NORMALIZATIONS"]
@@ -42,7 +42,7 @@ if config["OUTPUT"]["RUN"]["CHIPATLAS_BWS"]:
 
 rule all:
     input:
-        expand("{out_}", out_=outputs)
+        expand("{out_}", out_ = outputs)
 
 include: "rules/qc.smk"
 include: "rules/sra.smk"
@@ -55,4 +55,4 @@ include: "rules/chipatlas.smk"
 
 # TODO: Rule name standard
 # TODO: Tidiness
-
+# TODO: Put output generation in separate file

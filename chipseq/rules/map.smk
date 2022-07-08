@@ -9,6 +9,13 @@ def getFq(wildcards):
     elif lib == "Paired":
         return f"links/{{raw}}_1{trim}.fastq.gz", f"links/{{raw}}_2{trim}.fastq.gz"
 
+def getFilterParams(wildcards):
+    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
+    if lib == "Single":
+        return "-F 3852"
+    elif lib == "Paired":
+        return "-F 3852 -f 2"
+
 rule bwa_mem:
     input:
         getFq
@@ -20,10 +27,8 @@ rule bwa_mem:
         32
     shell:
         """
-        bwa mem -t {threads} \
-            {params.idx} \
-            {input} | \
-            samtools view -bS - > {output}
+        bwa mem -t {threads} {params.idx} {input} \
+        | samtools view -bS - > {output}
         """
 
 rule BamProcess:
@@ -34,21 +39,14 @@ rule BamProcess:
     threads:
         32
     params:
-        config["BAMPROCESS_PARAMS"]#{config[PARAMS][BamProcess]}" # Note that you can add parameters as "-q 30 -F 1804"
+        config["OUTPUT"]["BAMPROCESS_PARAMS"] # Note that you can add parameters as "-q 30 -F 1804"
     shell:
         """
-        cat <(samtools view -H {input}) <(samtools view {params} {input}) | \
-        samtools fixmate -m -@ {threads} - - | \
-        samtools sort -@ {threads} -m 10G - | \
-        samtools markdup -@ {threads} - {output}
+        samtools view -h {params} {input} \
+        | samtools fixmate -m -@ {threads} - - \
+        | samtools sort -@ {threads} -m 10G - \
+        | samtools markdup -@ {threads} - {output}
         """
-
-def getFilterParams(wildcards):
-    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
-    if lib == "Single":
-        return "-F 3852"
-    elif lib == "Paired":
-        return "-F 3852 -f 2"
 
 rule Filter:
     input:
@@ -65,7 +63,5 @@ rule Filter:
         samtools view {input} | egrep -v "chrM" | \
         samtools view -b -@ {threads} -T {params} > {output}
 
-
         samtools index -@ {threads} {output}
         """
-

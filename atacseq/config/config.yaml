@@ -1,12 +1,12 @@
-
 INPUT_DF: config/samples.tsv
 
 OUTPUT:
-    MACS3_TYPE:
-        - callsummit
     RUN:
         PEAKS: True
         QC: False
+    BAMPROCESS_PARAMS: -q 30
+    MACS3_TYPE:
+        - callsummit
 
 REF:
     NAME: hg19
@@ -18,6 +18,3 @@ CUT_ADAPTERS: True
 
 ADAPTER_FWD: CTGTCTCTTATA
 ADAPTER_REV: CTGTCTCTTATA
-
-BAMPROCESS_PARAMS: -q 30
-

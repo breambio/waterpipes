@@ -1,13 +1,3 @@
-rule Fastqc:
-    input:
-        "links/{raw}_{run}.fastq.gz"
-    output:
-        "qc/{raw}.{run}_fastqc.zip"
-    shell:
-        """
-        fastqc {input} -o qc
-        """
-
 def getMultiqc(wildcards):
     out = []
     for raw in sampleDF["Raw"]:
@@ -23,6 +13,16 @@ def getMultiqc(wildcards):
             out.append(fq2)
     return expand(out)
 
+rule Fastqc:
+    input:
+        "links/{raw}_{run}.fastq.gz"
+    output:
+        "qc/{raw}.{run}_fastqc.zip"
+    shell:
+        """
+        fastqc {input} -o qc
+        """
+
 rule Multiqc:
     input:
         getMultiqc
@@ -32,4 +32,3 @@ rule Multiqc:
         """
         cd qc/ && multiqc .
         """
-

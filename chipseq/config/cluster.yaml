@@ -3,4 +3,3 @@ __default__:
     partition: "long,normal,big-mem,express"
     c: 64
     time: "7-00:00:00" # time limit for each job
-
