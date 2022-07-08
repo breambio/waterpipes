@@ -1,3 +1,0 @@
-SyntaxError in line 79 of /home/ualtintas/genopipes/atacseq/rules/peaks.smk:
-invalid syntax (peaks.smk, line 79)
-  File "/home/ualtintas/genopipes/atacseq/Snakefile", line 43, in <module>

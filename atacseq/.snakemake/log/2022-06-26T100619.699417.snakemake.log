@@ -1,4 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 49 of /home/ualtintas/genopipes/atacseq/rules/premap.smk:
-Missing input files for rule Links:
-rawData/SRR17655755_1..trimmed.fastq.gz
