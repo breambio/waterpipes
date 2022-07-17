@@ -11,14 +11,16 @@ def getFq(wildcards):
 
 rule star:
     input:
+        getFq
     output:
-        "results_{ref}/star/{raw}Aligned.sortedByCoord.out.bam"
+        "results_{ref}/star/{raw}Aligned.sortedByCoord.out.bam",
+        "results_{ref}/star/{raw}Aligned.toTranscriptome.out.bam"
     params:
         staridx = config["REF"]["STAR_IDX"]
     threads:
         8
     shell:
-    """
+        """
         STAR --genomeDir {params.staridx} \
         --runThreadN {threads} \
         --readFilesIn {input} \
@@ -30,7 +32,7 @@ rule star:
         --quantMode TranscriptomeSAM
 
         samtools index -@{threads} {output}
-    """
+        """
 
 rule featureCounts:
     input:
@@ -38,19 +40,19 @@ rule featureCounts:
     output:
         "results_{ref}/countTable.featureCounts.tsv"
     params:
-        gtf = config["REF"]["GTF"]
-        fea = config["OUTPUT"]["FEATURECOUNTS_FEATURE"]
+        gtf = config["REF"]["GTF"],
+        fea = config["OUTPUT"]["FEATURECOUNTS_FEATURE"],
         att = config["OUTPUT"]["FEATURECOUNTS_ATTRIBUTE"]
     threads:
         64
     shell:
-    """
+        """
         featureCounts -T {threads} -t {param.fea} -g {param.att} -a {param.gtf} -o featureCounts.tsv {input}
 
         cut -f1,7- featureCounts.tsv | tail -n+2 > {output}
 
         rm featureCounts.tsv
-    """
+        """
 
 rule Salmon:
     input:
@@ -62,9 +64,9 @@ rule Salmon:
     threads:
         4
     shell:
-    """
+        """
         salmon quant -t {params.attotfa} -l A -a {input} -o {output}
-    """
+        """
 
 # TODO: Segmentation fault
 rule SalmonALL:
@@ -77,7 +79,7 @@ rule SalmonALL:
     threads:
         4
     shell:
-    """
+        """
         salmon quant -t {params.attotfa} -l A -a {input} -o {output}
-    """
+        """
 
