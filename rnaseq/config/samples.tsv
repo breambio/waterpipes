@@ -1,0 +1,7 @@
+Source	Condition	Rep	Path	Library
+LNCaP	VEH	rep1	rawData/SRR1735558	Paired
+LNCaP	VEH	rep2	rawData/SRR1735559	Paired
+LNCaP	VEH	rep3	rawData/SRR1735560	Paired
+LNCaP	TRE	rep1	rawData/SRR1735561	Paired
+LNCaP	TRE	rep2	rawData/SRR1735562	Paired
+LNCaP	TRE	rep3	rawData/SRR1735563	Paired

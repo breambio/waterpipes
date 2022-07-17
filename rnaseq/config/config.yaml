@@ -1,0 +1,21 @@
+INPUT_DF: config/samples.tsv
+
+OUTPUT:
+    RUN:
+        QC: False
+        SALMON_EACH: True
+        SALMON_ALL: False
+        FEATURECOUNTS: True
+    FEATURECOUNTS_FEATURE: exon
+    FEATURECOUNTS_ATTRIBUTE: gene_name
+
+REF:
+    NAME: hg19
+    FA: ...
+    GTF: ...
+    TRANSCRIPTS_FA: ...
+    STAR_IDX: ...
+    
+CUT_ADAPTERS: True
+ADAPTER_FWD: CTGTCTCTTATA
+ADAPTER_REV: CTGTCTCTTATA

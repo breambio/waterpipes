@@ -35,5 +35,5 @@ rule Links:
         "links/{raw}_{run}.fastq.gz"
     shell:
         """
-        ln -s ../{input} {output}
+        ln -s {input} {output}
         """

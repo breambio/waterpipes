@@ -21,7 +21,7 @@ rule cutadapt:
         if lib == "Single":
             shell("""
             cutadapt -a {params.fwd} -o {output.r1} -j {threads} {input}
-            touch {output.r2}
+            touch {output.R2}
             """)
         elif lib == "Paired":
             shell("""
@@ -37,3 +37,4 @@ rule Links:
         """
         ln -s {input} {output}
         """
+

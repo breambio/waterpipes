@@ -1,0 +1,35 @@
+import pandas as pd
+
+sampleDF = pd.read_table(config["INPUT_DF"])
+
+sampleDF["Raw"] = sampleDF["Source"] + "." + sampleDF["Condition"] + "." + sampleDF["Rep"]
+sampleDF["RawSample"] = sampleDF["Path"].str.rsplit("/", 1, expand=True)[1]
+
+ref = config["REF"]["NAME"]
+
+outputs = []
+
+if config["OUTPUT"]["RUN"]["QC"]:
+    outputs += ["qc/multiqc_report.html"]
+
+if config["OUTPUT"]["RUN"]["SALMON_EACH"]:
+    outputs += [
+        f"results_{ref}/salmon/{raw}/quant.sf"
+        for raw in sampleDF["Raw"]
+    ]
+
+if config["OUTPUT"]["RUN"]["SALMON_ALL"]:
+    outputs += [f"results_{ref}/salmon.all/quant.sf"]
+
+if config["OUTPUT"]["RUN"]["FEATURECOUNTS"]:
+    outputs += [f"results_{ref}/countTable.featureCounts.tsv"]
+
+rule all:
+    input:
+        expand("{out_}", out_=outputs)
+
+include: "rules/qc.smk"
+include: "rules/sra.smk"
+include: "rules/premap.smk"
+include: "rules/star.smk"
+
