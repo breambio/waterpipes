@@ -1,22 +1,4 @@
-def getFq(wildcards):
-    trim = ""
-    if config["CUT_ADAPTERS"]:
-        trim = ".trimmed"
-
-    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
-    if lib == "Single":
-        return f"links/{{raw}}_1{trim}.fastq.gz"
-    elif lib == "Paired":
-        return f"links/{{raw}}_1{trim}.fastq.gz", f"links/{{raw}}_2{trim}.fastq.gz"
-
-def getFilterParams(wildcards):
-    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
-    if lib == "Single":
-        return "-F 3852"
-    elif lib == "Paired":
-        return "-F 3852 -f 2"
-
-rule bwa_mem:
+rule map_bwa:
     input:
         getFq
     output:
@@ -31,7 +13,7 @@ rule bwa_mem:
         | samtools view -bS - > {output}
         """
 
-rule BamProcess:
+rule bam_process:
     input:
         "results_{ref}/mapping/{raw}.raw.bam"
     output:
@@ -48,7 +30,7 @@ rule BamProcess:
         | samtools markdup -@ {threads} - {output}
         """
 
-rule Filter:
+rule bam_filter:
     input:
         "results_{ref}/mapping/{raw}.coorsorted.bam",
     output:
@@ -56,7 +38,7 @@ rule Filter:
     threads:
         32
     params:
-        config["REF"]["FA"],
+        config["REF"]["FA"], # needed for chromosome filter
         getFilterParams
     shell:
         """
@@ -65,3 +47,26 @@ rule Filter:
 
         samtools index -@ {threads} {output}
         """
+
+
+rule bam_merge:
+    input:
+        get_reps
+    output:
+        "results_{ref}/mapping/{raw}.final.bam"
+    threads:
+        32
+    shell:
+		"""
+        if [[ "{input}" = *" "* ]]; then
+            samtools merge -@ {threads} -o {output} {input}
+            samtools index {output}
+        else
+            mv {input} {output}
+            samtools index {output}
+        fi
+        """
+
+
+
+# TODO: bam_merge

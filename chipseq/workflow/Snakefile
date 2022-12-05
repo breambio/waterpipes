@@ -1,0 +1,17 @@
+configfile: "config/config.yaml"
+
+include: "rules/qc.smk"
+include: "rules/sra.smk"
+include: "rules/premap.smk"
+include: "rules/map.smk"
+include: "rules/peaks.smk"
+include: "rules/bw.smk"
+include: "rules/chipatlas.smk"
+
+rule all:
+    input:
+        expand("{out_}", out_ = outputs)
+
+# TODO: Rule name standard
+# TODO: Tidiness
+# TODO: Put output generation in separate file

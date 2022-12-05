@@ -1,4 +1,5 @@
-INPUT_DF: config/samples.tsv
+SAMPLES: config/samples.tsv
+UNITS: config/units.tsv
 
 OUTPUT:
     RUN:

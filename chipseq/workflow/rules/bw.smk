@@ -1,6 +1,6 @@
 rule GenomeCov:
     input:
-        bam = "results_{ref}/mapping/{raw}.filtered.bam",
+        bam = "results_{ref}/mapping/{raw}.final.bam",
     output:
         bg = temp("results_{ref}/bigwig/{raw}.genomecov.{norm}.bg"),
         bw = "results_{ref}/bigwig/{raw}.genomecov.{norm}.bw"

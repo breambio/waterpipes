@@ -1,21 +1,12 @@
-rule SRAprefetch:
-    output:
-        temp("rawData/{srr}/{srr}.sra")
-    shell:
-        """
-        prefetch -O rawData {wildcards.srr}
-        """
 
 rule ParallelFastqDump:
-    input:
-        "rawData/{srr}/{srr}.sra"
     output:
-        r1 = "rawData/{srr}_1.fastq.gz",
-        r2 = "rawData/{srr}_2.fastq.gz"
+        r1 = "sra-data/{srr}_1.fastq.gz",
+        r2 = "sra-data/{srr}_2.fastq.gz"
     threads:
         64
     run:
-        lib = sampleDF.loc[sampleDF["RawSample"] == wildcards.srr, "Library"].unique()[0]
+        lib = units.loc[units["Fastq1"] == wildcards.srr, "Library"].unique()[0]
         if lib == "Single":
             shell("""
             parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
