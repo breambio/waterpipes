@@ -1,18 +1,24 @@
 import pandas as pd
-
+#config = yaml.safe_load(Path('config/config.yaml').read_text())
 samples = pd.read_table(config["SAMPLES"])
 units = pd.read_table(config["UNITS"])
 
-units['Raw'] = units['Name'] + '_' + units['Unit']
+units['Raw'] = units['Name'] + '_' + units['Unit'].astype(str)
 
 def get_lib(wildcards):
-	return units.loc[units["Raw"] == wildcards.raw), "Library"].unique()[0]
+	return units.loc[units["Raw"] == wildcards.raw, "Library"].unique()[0]
+
 def get_source(wildcards):
-	return units.loc[units["Raw"] == wildcards.raw), "Source"].unique()[0]
+	return units.loc[units["Raw"] == wildcards.raw, "Source"].unique()[0]
+
+def get_units(wildcards):
+	return units.loc[units["Raw"] == wildcards.raw, "Unit"].unique()
+
 def get_fq1(wildcards):
-	return units.loc[units["Raw"] == wildcards.raw), "Fastq1"].unique()[0]
+	return units.loc[units["Raw"] == wildcards.raw, "Fastq1"].unique()[0]
+
 def get_fq2(wildcards):
-	return units.loc[units["Raw"] == wildcards.raw), "Fastq2"].unique()[0]
+	return units.loc[units["Raw"] == wildcards.raw, "Fastq2"].unique()[0]
 
 def get_contol(wildcards):
 	raw_inp = samples.loc[samples["Name"] == wildcards.raw, "Control"].unique()[0]
@@ -36,14 +42,14 @@ def get_fqs(wildcards):
 			return fq1, fq2
 
 def get_filters(wildcards):
-    lib = units.loc[units["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
+    lib = get_library(wildcards)
     if lib == "Single":
         return "-F 3852"
     elif lib == "Paired":
         return "-F 3852 -f 2"
 
 def get_reps(wildcards):
-    reps = list(units[units["Name"] == wildcards.raw]["Unit"])
+    reps = get_units(wildcards)
     return expand(f"results/mapping/{wildcards.raw}_{{rep}}.filtered.bam", rep=reps)
 # <<< `map.smk` functions <<<
 
