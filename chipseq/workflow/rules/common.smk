@@ -66,7 +66,7 @@ def get_macs_i(wildcards):
 	if input_c == '-':
 		return "results_{ref}/mapping/{raw}.final.bam"
 	else:
-		return f"results_{{ref}}/mapping/{{raw}}.final.bam -c results_{{ref}}/mapping/{c}.final.bam"
+		return f"results_{{ref}}/mapping/{{raw}}.final.bam -c results_{{ref}}/mapping/{input_c}.final.bam"
 # >>> `peak.smk` functions
 
 ref = config["REF"]["NAME"]
