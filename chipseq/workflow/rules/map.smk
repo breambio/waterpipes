@@ -57,7 +57,7 @@ rule bam_merge:
 	threads:
 		32
 	run:
-		if input.find(' ') != -1:
+		if str(input).find(' ') != -1:
 			shell("""
 		    samtools merge -@ {threads} -o {output} {input}
 		    samtools index {output}
