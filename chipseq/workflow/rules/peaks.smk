@@ -1,4 +1,4 @@
-rule Macs:
+rule macs:
     input:
         "results_{ref}/mapping/{raw}.final.bam"
     output:
