@@ -50,13 +50,13 @@ rule bam_filter:
 
 
 rule bam_merge:
-    input:
-        get_reps
-    output:
-        "results_{ref}/mapping/{raw}.final.bam"
-    threads:
-        32
-    run:
+	input:
+		get_reps
+	output:
+		"results_{ref}/mapping/{raw}.final.bam"
+	threads:
+		32
+	run:
 		if input.find(' ') != -1:
 			shell("""
 		    samtools merge -@ {threads} -o {output} {input}
