@@ -52,7 +52,7 @@ def get_filter_p(wildcards):
 
 def get_reps(wildcards):
     reps = get_units(wildcards)
-    return expand("results/mapping/{rep}.filtered.bam", rep=reps)
+    return expand("results_{{ref}}/mapping/{rep}.filtered.bam", rep=reps)
 # <<< `map.smk` functions <<<
 
 # >>> `peak.smk` functions >>>
