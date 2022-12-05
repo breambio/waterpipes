@@ -14,7 +14,7 @@ def get_source(wildcards):
 	return units.loc[units["Raw"] == wildcards.raw, "Source"].unique()[0]
 
 def get_units(wildcards):
-	return units.loc[units["Raw"] == wildcards.raw, "Unit"].unique()
+	return units.loc[units["Name"] == wildcards.raw, "Raw"].unique()
 
 def get_fq1(wildcards):
 	return units.loc[units["Raw"] == wildcards.raw, "Fastq1"].unique()[0]
@@ -52,7 +52,7 @@ def get_filter_p(wildcards):
 
 def get_reps(wildcards):
     reps = get_units(wildcards)
-    return expand(f"results/mapping/{wildcards.raw}_{{rep}}.filtered.bam", rep=reps)
+    return expand(f"results/mapping/{rep}.filtered.bam", rep=reps)
 # <<< `map.smk` functions <<<
 
 # >>> `peak.smk` functions >>>
