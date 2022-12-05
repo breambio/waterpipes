@@ -20,7 +20,7 @@ def get_fq2(wildcards):
 	return units.loc[units["Raw"] == wildcards.raw, "Fastq2"].unique()[0]
 
 def get_contol(wildcards):
-	 return samples.loc[samples["Name"] == wildcards.raw, "Control"].unique()[0]
+	return samples.loc[samples["Name"] == wildcards.raw, "Control"].unique()[0]
 
 # >>> `map.smk` functions >>>
 def get_fqs(wildcards):
