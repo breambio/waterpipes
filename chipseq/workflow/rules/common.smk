@@ -24,7 +24,9 @@ def get_contol(wildcards):
 
 # >>> `map.smk` functions >>>
 def get_fqs(wildcards):
-	source = str(wildcards.raw).find("SRR") != -1
+	name, unit = wildcards.raw.split("_")
+	fq1 = units.loc["Name"] == name,"Fastq1"]
+	source = fq1.find("SRR") != -1
 	print(source)
 	lib = get_lib(wildcards)
 	if source:
