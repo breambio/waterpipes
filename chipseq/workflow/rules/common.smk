@@ -24,7 +24,8 @@ def get_contol(wildcards):
 
 # >>> `map.smk` functions >>>
 def get_fqs(wildcards):
-	source = wildcards.raw.find("SRR") != -1
+	source = str(wildcards.raw).find("SRR") != -1
+	print(source)
 	lib = get_lib(wildcards)
 	if source:
 		srr = get_fq1(wildcards)
