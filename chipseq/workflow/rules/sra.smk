@@ -9,10 +9,10 @@ rule ParallelFastqDump:
         lib = units.loc[units["Fastq1"] == wildcards.srr, "Library"].unique()[0]
         if lib == "Single":
             shell("""
-            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
+            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O sra-data
             touch {output.r2}
             """)
         elif lib == "Paired":
             shell("""
-            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O rawData
+            parallel-fastq-dump -t {threads} --split-files --gzip -s {input} -O sra-data
             """)

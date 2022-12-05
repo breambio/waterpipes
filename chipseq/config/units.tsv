@@ -1,4 +1,4 @@
-Name	Unit	Source Fastq1	Fastq2	Library
+Name	Unit	Source	Fastq1	Fastq2	Library
 PDX35AR	1	SRA	SRR11856222	-	Single
 PDX35FOXA1	1	SRA	SRR11856264	-	Single
 PDX35HOXB13	1	SRA	SRR11856307	-	Single

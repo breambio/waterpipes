@@ -49,15 +49,13 @@ def get_reps(wildcards):
 
 # >>> `peak.smk` functions >>>
 def get_macs_p(wildcards):
-    lib = sampleDF.loc[sampleDF["Raw"].str.find(wildcards.raw) != -1, "Library"].unique()[0]
+    lib = samples.loc[samples["Name"] == wildcards.raw, "Library"].unique()[0]
     if lib == "Single":
         return "-f BAM"
     elif lib == "Paired":
         return "-f BAMPE"
 
 def get_macs_i(wildcards):
-
-    inp = ["results_{ref}/mapping/{raw}.final.bam"]
     input_c = get_contol(wildcards)
 	if input_c == '-':
 		return "results_{ref}/mapping/{raw}.final.bam"
