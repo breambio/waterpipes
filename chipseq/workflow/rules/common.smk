@@ -30,7 +30,7 @@ def get_fqs(wildcards):
 	print(source)
 	lib = get_lib(wildcards)
 	if source:
-		srr = get_fq1(wildcards)
+		srr = fq1
 		if lib == "Single":
 			return f"sra-data/{srr}_1.fastq.gz"
 		elif lib == "Paired":
