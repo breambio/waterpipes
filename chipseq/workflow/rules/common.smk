@@ -62,7 +62,7 @@ def get_macs_p(wildcards):
         return "-f BAMPE"
 
 def get_macs_i(wildcards):
-    input_c = get_contol(wildcards)
+	input_c = get_contol(wildcards)
 	if input_c == '-':
 		return "results_{ref}/mapping/{raw}.final.bam"
 	else:
