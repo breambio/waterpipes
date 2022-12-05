@@ -56,17 +56,14 @@ rule bam_merge:
         "results_{ref}/mapping/{raw}.final.bam"
     threads:
         32
-    shell:
-		"""
-		if [[ "{input}" = *" "* ]]; then
+    run:
+		if input.find(' ') != -1:
+			shell("""
 		    samtools merge -@ {threads} -o {output} {input}
 		    samtools index {output}
-		else
+			""")
+		else:
+			shell("""
 		    mv {input} {output}
 		    samtools index {output}
-		fi
-		"""
-
-
-
-# TODO: bam_merge
+			""")
