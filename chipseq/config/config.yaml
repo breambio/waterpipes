@@ -15,9 +15,9 @@ OUTPUT:
 
 REF:
     NAME: hg19
-    FA: ...
-    BWA_IDX: ...
-    CHROM_SIZES: ...
+    FA: /groups/lackgrp/genomeAnnotations/hg19/hg19.fa
+    BWA_IDX: /groups/lackgrp/genomeAnnotations/hg19/hg19.bwa.idx
+    CHROM_SIZES: /groups/lackgrp/genomeAnnotations/hg19/hg19.chrom.sizes
 
 CUT_ADAPTERS: True
 ADAPTER_FWD: CTGTCTCTTATA
