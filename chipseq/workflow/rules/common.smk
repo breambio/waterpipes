@@ -55,7 +55,7 @@ def get_reps(wildcards):
 
 # >>> `peak.smk` functions >>>
 def get_macs_p(wildcards):
-    lib = samples.loc[samples["Name"] == wildcards.raw, "Library"].unique()[0]
+	lib = samples.loc[samples["Name"] == wildcards.raw, "Library"].unique()[0]
 	input_c = get_contol(wildcards)
 	if input_c == '-':
 		param = ''
