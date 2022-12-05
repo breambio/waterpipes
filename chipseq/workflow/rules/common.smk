@@ -44,15 +44,15 @@ def get_fqs(wildcards):
 			return fq1, fq2
 
 def get_filter_p(wildcards):
-    lib = get_lib(wildcards)
-    if lib == "Single":
-        return "-F 3852"
-    elif lib == "Paired":
-        return "-F 3852 -f 2"
+	lib = get_lib(wildcards)
+	if lib == "Single":
+		return "-F 3852"
+	elif lib == "Paired":
+		return "-F 3852 -f 2"
 
 def get_reps(wildcards):
-    reps = get_units(wildcards)
-    return expand("results_{{ref}}/mapping/{rep}.filtered.bam", rep=reps)
+	reps = get_units(wildcards)
+	return expand("results_{{ref}}/mapping/{rep}.filtered.bam", rep=reps)
 # <<< `map.smk` functions <<<
 
 # >>> `peak.smk` functions >>>
@@ -75,18 +75,18 @@ bwNorm = config["OUTPUT"]["BW_NORMALIZATIONS"]
 outputs = []
 
 if config["OUTPUT"]["RUN"]["QC"]:
-    outputs += ["qc/multiqc_report.html"]
+	outputs += ["qc/multiqc_report.html"]
 
 if config["OUTPUT"]["RUN"]["PEAKS"]:
-    outputs += [
-        f"results_{ref}/peaks/{raw}_peaks.narrowPeak"
-        for raw, c in zip(samples["Name"],samples["Control"])
-        if c != "-"
-    ]
+	outputs += [
+		f"results_{ref}/peaks/{raw}_peaks.narrowPeak"
+		for raw, c in zip(samples["Name"],samples["Control"])
+		if c != "-"
+	]
 
 if config["OUTPUT"]["RUN"]["BWS"]:
-    outputs += [
-        f"results_{ref}/bigwig/{raw}.genomecov.{norm}.bw"
-        for raw in samples["Name"]
-        for norm in bwNorm
-    ]
+	outputs += [
+		f"results_{ref}/bigwig/{raw}.genomecov.{norm}.bw"
+		for raw in samples["Name"]
+		for norm in bwNorm
+	]
