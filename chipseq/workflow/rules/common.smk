@@ -41,7 +41,7 @@ def get_fqs(wildcards):
 		elif lib == 'Paired':
 			return fq1, fq2
 
-def get_filters(wildcards):
+def get_filter_p(wildcards):
     lib = get_library(wildcards)
     if lib == "Single":
         return "-F 3852"

@@ -1,6 +1,6 @@
 rule map_bwa:
     input:
-        getFq
+        get_fqs
     output:
         "results_{ref}/mapping/{raw}.raw.bam"
     params:
@@ -39,7 +39,7 @@ rule bam_filter:
         32
     params:
         config["REF"]["FA"],
-        getFilterParams
+        get_filter_p
     shell:
         """
         samtools view {input} | egrep -v "chrM" | \
