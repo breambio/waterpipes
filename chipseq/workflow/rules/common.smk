@@ -62,7 +62,7 @@ def get_macs_p(wildcards):
 	if input_c == '-':
 		param = ''
 	else:
-		param = '-c results_{{ref}}/mapping/{input_c}.final.bam'
+		param = f'-c results_{{ref}}/mapping/{input_c}.final.bam'
 	if lib == "Single":
 		return param + " -f BAM"
 	elif lib == "Paired":
