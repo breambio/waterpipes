@@ -80,7 +80,7 @@ if config["OUTPUT"]["RUN"]["QC"]:
 if config["OUTPUT"]["RUN"]["PEAKS"]:
     outputs += [
         f"results_{ref}/peaks/{raw}_peaks.narrowPeak"
-        for raw, c in zip(samples["Name"],samples["InputControl"])
+        for raw, c in zip(samples["Name"],samples["Control"])
         if c != '-'
     ]
 
