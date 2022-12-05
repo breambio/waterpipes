@@ -21,7 +21,7 @@ rule bam_process:
     threads:
         32
     params:
-        config["OUTPUT"]["BAMPROCESS_PARAMS"] # Note that you can add parameters as "-q 30 -F 1804"
+        config["OUTPUT"]["BAMPROCESS_PARAMS"]
     shell:
         """
         samtools view -h {params} {input} \
@@ -32,13 +32,13 @@ rule bam_process:
 
 rule bam_filter:
     input:
-        "results_{ref}/mapping/{raw}.coorsorted.bam",
+        "results_{ref}/mapping/{raw}.coorsorted.bam"
     output:
         "results_{ref}/mapping/{raw}.filtered.bam"
     threads:
         32
     params:
-        config["REF"]["FA"], # needed for chromosome filter
+        config["REF"]["FA"],
         getFilterParams
     shell:
         """
@@ -57,7 +57,6 @@ rule bam_merge:
     threads:
         32
     run:
-		print(input)
 		if input.find(' ') != -1:
 			shell("""
 		    samtools merge -@ {threads} -o {output} {input}
