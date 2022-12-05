@@ -1,5 +1,7 @@
 import pandas as pd
-#config = yaml.safe_load(Path('config/config.yaml').read_text())
+import yaml
+from pathlib import Path
+config = yaml.safe_load(Path('config/config.yaml').read_text())
 samples = pd.read_table(config["SAMPLES"])
 units = pd.read_table(config["UNITS"])
 
@@ -61,9 +63,10 @@ def get_macs_p(wildcards):
 		param = ''
 	else:
 		param = '-c results_{{ref}}/mapping/{input_c}.final.bam'
-    if lib == "Single":
-        return param + " -f BAM"
-    elif lib == "Paired":ß
+	if lib == "Single":
+		return param + " -f BAM"
+	elif lib == "Paired":
+		return param + ' -f BAMPE'
 # >>> `peak.smk` functions
 
 ref = config["REF"]["NAME"]
