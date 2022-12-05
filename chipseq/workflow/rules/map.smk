@@ -58,14 +58,14 @@ rule bam_merge:
         32
     shell:
 		"""
-        if [[ "{input}" = *" "* ]]; then
-            samtools merge -@ {threads} -o {output} {input}
-            samtools index {output}
-        else
-            mv {input} {output}
-            samtools index {output}
-        fi
-        """
+		if [[ "{input}" = *" "* ]]; then
+		    samtools merge -@ {threads} -o {output} {input}
+		    samtools index {output}
+		else
+		    mv {input} {output}
+		    samtools index {output}
+		fi
+		"""
 
 
 
