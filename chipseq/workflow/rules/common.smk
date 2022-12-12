@@ -8,7 +8,6 @@ units = pd.read_table(config["UNITS"])
 units["Raw"] = units["Name"] + "_" + units["Unit"].astype(str)
 
 def get_lib(wildcards):
-	print(units.columns)
 	return units.loc[units["Raw"] == wildcards.raw, "Library"].unique()[0]
 
 def get_units(wildcards):
