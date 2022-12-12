@@ -1,7 +1,7 @@
 import pandas as pd
-#import yaml
-#from pathlib import Path
-#config = yaml.safe_load(Path("config/config.yaml").read_text())
+import yaml
+from pathlib import Path
+config = yaml.safe_load(Path("config/config.yaml").read_text())
 samples = pd.read_table(config["SAMPLES"])
 units = pd.read_table(config["UNITS"])
 
@@ -25,7 +25,7 @@ def get_contol(wildcards):
 # >>> `map.smk` functions >>>
 def get_fqs(wildcards):
 	name, unit = wildcards.raw.split("_")
-	fq1 = units.loc["Name"] == name,"Fastq1"]
+	fq1 = units.loc[units["Name"] == name,"Fastq1"]
 	source = fq1.find("SRR") != -1
 	print(source)
 	lib = get_lib(wildcards)
