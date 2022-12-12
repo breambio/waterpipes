@@ -1,6 +1,6 @@
 rule macs:
     input:
-        "results_{ref}/mapping/{raw}.final.bam"
+        get_macs_i
     output:
         "results_{ref}/peaks/{raw}_peaks.narrowPeak"
     threads:
@@ -10,6 +10,6 @@ rule macs:
     shell:
         """
         macs3 callpeak \
-          -t {input} {params} \
+          {params}  \
           -g hs -n results_{wildcards.ref}/peaks/{wildcards.raw} -B -q 0.00001
         """

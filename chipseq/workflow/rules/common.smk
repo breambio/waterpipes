@@ -58,14 +58,21 @@ def get_reps(wildcards):
 def get_macs_p(wildcards):
 	lib = units.loc[units["Name"] == wildcards.raw, "Library"].unique()[0]
 	input_c = get_contol(wildcards)
-	if input_c == "-":
-		param = ""
-	else:
-		param = f"-c results_{wildcards.ref}/mapping/{input_c}.final.bam"
+	param = f"-i results_{wildcards.ref}/mapping/{wildcards.raw}.final.bam"
+	if not input_c == "-":
+		param += f" -c results_{wildcards.ref}/mapping/{input_c}.final.bam"
 	if lib == "Single":
-		return param + " -f BAM"
+		param += " -f BAM"
 	elif lib == "Paired":
-		return param + " -f BAMPE"
+		param += " -f BAMPE"
+	return param
+def get_macs_i(wildcards):
+	inputs = []
+	input_c = get_contol(wildcards)
+	if not input_c == "-":
+		inputs.append(f"results_{wildcards.ref}/mapping/{input_c}.final.bam")
+	inputs.append(f"results_{wildcards.ref}/mapping/{wildcards.raw}.final.bam")
+	return inputs
 # >>> `peak.smk` functions
 
 ref = config["REF"]["NAME"]
