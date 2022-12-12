@@ -27,7 +27,7 @@ def get_fqs(wildcards):
 	name, unit = wildcards.raw.split("_")
 	fq1 = units.loc[units["Name"] == name,"Fastq1"]
 	source = str(fq1).find("SRR") != -1
-	print(source)
+	print(fq1)
 	lib = get_lib(wildcards)
 	if source:
 		srr = fq1
