@@ -26,7 +26,7 @@ def get_contol(wildcards):
 def get_fqs(wildcards):
 	name, unit = wildcards.raw.split("_")
 	fq1 = units.loc[units["Name"] == name,"Fastq1"]
-	source = fq1.find("SRR") != -1
+	source = str(fq1).find("SRR") != -1
 	print(source)
 	lib = get_lib(wildcards)
 	if source:
