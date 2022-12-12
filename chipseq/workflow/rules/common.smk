@@ -8,6 +8,7 @@ units = pd.read_table(config["UNITS"])
 units["Raw"] = units["Name"] + "_" + units["Unit"].astype(str)
 
 def get_lib(wildcards):
+	print(units.columns)
 	return units.loc[units["Raw"] == wildcards.raw, "Library"].unique()[0]
 
 def get_units(wildcards):
@@ -27,7 +28,6 @@ def get_fqs(wildcards):
 	name, unit = wildcards.raw.split("_")
 	fq1 = units.loc[units["Name"] == name,"Fastq1"].unique()[0]
 	source = str(fq1).find("SRR") != -1
-	print(fq1)
 	lib = get_lib(wildcards)
 	if source:
 		srr = fq1
