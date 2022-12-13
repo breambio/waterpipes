@@ -2,7 +2,7 @@ rule macs:
     input:
         get_macs_i
     output:
-        "results_{ref}/peaks/{raw}_peaks.narrowPeak"
+        "results_{ref}/peaks/{raw}_{q}_peaks.narrowPeak"
     threads:
         16
     params:
@@ -11,5 +11,5 @@ rule macs:
         """
         macs3 callpeak \
           {params}  \
-          -g hs -n results_{wildcards.ref}/peaks/{wildcards.raw} -B -q 0.00001
+          -g hs -n results_{wildcards.ref}/peaks/{wildcards.raw}_{wildcards.q} -B -q {wildcards.q}
         """

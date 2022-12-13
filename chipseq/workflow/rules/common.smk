@@ -58,9 +58,9 @@ def get_reps(wildcards):
 def get_macs_p(wildcards):
 	lib = units.loc[units["Name"] == wildcards.raw, "Library"].unique()[0]
 	input_c = get_contol(wildcards)
-	param = f"-i results_{wildcards.ref}/mapping/{wildcards.raw}.final.bam"
+	param = f"-t results_{wildcards.ref}/mapping/{wildcards.raw}.final.bam "
 	if not input_c == "-":
-		param += f" -c results_{wildcards.ref}/mapping/{input_c}.final.bam"
+		param += f" -c results_{wildcards.ref}/mapping/{input_c}.final.bam "
 	if lib == "Single":
 		param += " -f BAM"
 	elif lib == "Paired":
@@ -83,11 +83,11 @@ outputs = []
 if config["OUTPUT"]["RUN"]["QC"]:
 	outputs += ["qc/multiqc_report.html"]
 
+q = config['OUTPUT']['MACS_THRESHOLD']
 if config["OUTPUT"]["RUN"]["PEAKS"]:
 	outputs += [
-		f"results_{ref}/peaks/{raw}_peaks.narrowPeak"
-		for raw, c in zip(samples["Name"],samples["Control"])
-		if c != "-"
+		f"results_{ref}/peaks/{raw}_{q}_peaks.narrowPeak"
+		for raw in samples["Name"]
 	]
 
 if config["OUTPUT"]["RUN"]["BWS"]:
